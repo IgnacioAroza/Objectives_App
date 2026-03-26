@@ -100,41 +100,63 @@ export default async function DashboardPage() {
         <h1 className="font-display font-bold text-2xl text-navy">Hola, Ignacio</h1>
       </div>
 
-      {/* Category cards */}
-      <div className="grid grid-cols-3 gap-2 md:gap-3">
+      {/* Category cards — mobile: lista vertical */}
+      <div className="md:hidden space-y-2">
         {categories.map((cat) => (
           <Link
             key={cat.label}
             href={cat.href}
-            className="bg-white border border-navy/10 rounded-2xl p-3 md:p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+            className="flex items-center gap-4 bg-white border border-navy/10 rounded-2xl p-4 hover:bg-cream/50 transition-colors"
           >
-            <div className="text-lg md:text-xl mb-1.5">{cat.icon}</div>
-            <p className="font-display font-bold text-[10px] md:text-xs text-navy mb-1 leading-tight">{cat.label}</p>
-            <p className="font-display font-bold text-xl md:text-2xl text-navy">
-              {cat.pct}<span className="text-xs md:text-sm font-body font-normal text-navy/40">%</span>
+            <span className="text-2xl w-7 text-center shrink-0">{cat.icon}</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-display font-bold text-sm text-navy mb-1.5">{cat.label}</p>
+              <ProgressBar value={cat.pct} />
+            </div>
+            <p className="font-display font-bold text-2xl text-navy shrink-0">
+              {cat.pct}<span className="text-sm font-body font-normal text-navy/40">%</span>
             </p>
-            <ProgressBar value={cat.pct} className="mt-1.5 md:mt-2" />
           </Link>
         ))}
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-2 md:gap-3">
+      {/* Category cards — desktop: grid 3 cols */}
+      <div className="hidden md:grid grid-cols-3 gap-3">
+        {categories.map((cat) => (
+          <Link
+            key={cat.label}
+            href={cat.href}
+            className="bg-white border border-navy/10 rounded-2xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+          >
+            <div className="text-xl mb-2">{cat.icon}</div>
+            <p className="font-display font-bold text-xs text-navy mb-1">{cat.label}</p>
+            <p className="font-display font-bold text-2xl text-navy">
+              {cat.pct}<span className="text-sm font-body font-normal text-navy/40">%</span>
+            </p>
+            <ProgressBar value={cat.pct} className="mt-2" />
+          </Link>
+        ))}
+      </div>
+
+      {/* Stats — mobile: 2 cols arriba + 1 abajo full; desktop: 3 cols */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
         <StatsCard
-          label="Peso"
-          value={`${pesoActual}kg`}
-          sub="Meta: 90"
+          label="Peso actual"
+          value={`${pesoActual} kg`}
+          sub="Meta: 90 kg"
         />
         <StatsCard
-          label="Sin fumar"
+          label="Días sin fumar"
           value={streakDays !== null ? String(streakDays) : '—'}
-          sub="días"
+          sub="Racha actual"
         />
-        <StatsCard
-          label="Facturación"
-          value={`$${facturacionCurrent}M`}
-          sub="ARS"
-        />
+        <div className="col-span-2 md:col-span-1">
+          <StatsCard
+            label="Facturación acumulada"
+            value={`$${facturacionCurrent}M`}
+            sub="En ARS"
+          />
+        </div>
       </div>
 
       {/* Days left */}
