@@ -62,13 +62,16 @@ export default function TaskListClient({
   function handleCompleted(taskId: string) {
     const task = pendingTasks.find((t) => t.id === taskId)
     if (!task) return
-    const completedTask = {
-      ...task,
-      done: true,
-      done_at: new Date().toISOString(),
-    }
     setPendingTasks(pendingTasks.filter((t) => t.id !== taskId))
-    setDoneTasks([completedTask, ...doneTasks])
+    setDoneTasks([{ ...task, done: true, done_at: new Date().toISOString() }, ...doneTasks])
+  }
+
+  function handleEdited(updated: Task) {
+    setPendingTasks(pendingTasks.map((t) => (t.id === updated.id ? updated : t)))
+  }
+
+  function handleDeleted(taskId: string) {
+    setPendingTasks(pendingTasks.filter((t) => t.id !== taskId))
   }
 
   return (
@@ -130,7 +133,7 @@ export default function TaskListClient({
         ) : (
           <div className="space-y-2">
             {pendingTasks.map((task) => (
-              <TaskItem key={task.id} task={task} onCompleted={handleCompleted} />
+              <TaskItem key={task.id} task={task} onCompleted={handleCompleted} onEdited={handleEdited} onDeleted={handleDeleted} />
             ))}
           </div>
         )}

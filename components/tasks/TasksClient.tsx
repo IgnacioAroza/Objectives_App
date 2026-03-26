@@ -2,9 +2,11 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import type { TaskWithObjective } from '@/lib/types'
+import { createClient } from '@/lib/supabase/client'
+import type { TaskWithObjective, Task } from '@/lib/types'
 import Badge from '@/components/ui/Badge'
 import TaskModal from '@/components/objectives/TaskModal'
+import EditTaskModal from '@/components/objectives/EditTaskModal'
 import { formatDateShort, getPriorityLabel, getCategoryLabel } from '@/lib/utils'
 
 type Filter = 'all' | 'negocio' | 'salud' | 'lifestyle'
@@ -21,7 +23,9 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
   const [categoryFilter, setCategoryFilter] = useState<Filter>('all')
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('all')
   const [showDone, setShowDone] = useState(false)
-  const [activeModal, setActiveModal] = useState<TaskWithObjective | null>(null)
+  const [activeCompleteModal, setActiveCompleteModal] = useState<TaskWithObjective | null>(null)
+  const [activeEditModal, setActiveEditModal] = useState<TaskWithObjective | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const filteredPending = useMemo(() => {
     return pendingTasks.filter((t) => {
@@ -42,7 +46,31 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
     if (!task) return
     setPendingTasks(pendingTasks.filter((t) => t.id !== taskId))
     setDoneTasks([{ ...task, done: true, done_at: new Date().toISOString() }, ...doneTasks])
-    setActiveModal(null)
+    setActiveCompleteModal(null)
+  }
+
+  function handleEdited(updated: Task) {
+    setPendingTasks(pendingTasks.map((t) =>
+      t.id === updated.id ? { ...t, ...updated } : t
+    ))
+    setActiveEditModal(null)
+  }
+
+  async function handleDelete(task: TaskWithObjective) {
+    if (!confirm('¿Seguro que querés eliminar esta tarea?')) return
+    setDeletingId(task.id)
+
+    const supabase = createClient()
+    const { error } = await supabase.from('tasks').delete().eq('id', task.id)
+
+    if (error) {
+      console.error('[tasks] delete:', error.message)
+      setDeletingId(null)
+      return
+    }
+
+    setPendingTasks(pendingTasks.filter((t) => t.id !== task.id))
+    setDeletingId(null)
   }
 
   const categoryFilters: { value: Filter; label: string }[] = [
@@ -146,17 +174,15 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
         {filteredPending.length === 0 ? (
           <div className="px-5 py-10 text-center">
             <p className="text-sm text-navy/40 font-body">
-              {pendingTasks.length === 0
-                ? 'No hay tareas pendientes.'
-                : 'No hay tareas con ese filtro.'}
+              {pendingTasks.length === 0 ? 'No hay tareas pendientes.' : 'No hay tareas con ese filtro.'}
             </p>
           </div>
         ) : (
           <div className="divide-y divide-navy/5">
             {filteredPending.map((task) => (
-              <div key={task.id} className="flex items-start gap-3 px-5 py-3 hover:bg-cream/50 transition-colors">
+              <div key={task.id} className="group flex items-start gap-3 px-5 py-3 hover:bg-cream/50 transition-colors">
                 <button
-                  onClick={() => setActiveModal(task)}
+                  onClick={() => setActiveCompleteModal(task)}
                   className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-navy/30 hover:border-brand mt-0.5 transition-colors"
                   aria-label="Marcar como completada"
                 />
@@ -174,11 +200,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
                     )}
                     <Badge
                       variant={
-                        task.priority === 1
-                          ? 'priority-high'
-                          : task.priority === 2
-                            ? 'priority-mid'
-                            : 'priority-low'
+                        task.priority === 1 ? 'priority-high' : task.priority === 2 ? 'priority-mid' : 'priority-low'
                       }
                     >
                       {getPriorityLabel(task.priority)}
@@ -191,20 +213,47 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
                   </div>
                 </div>
 
-                {task.due_date && (
-                  <span
-                    className={`text-xs font-body shrink-0 ${
-                      isOverdue(task.due_date)
-                        ? 'text-red-500 font-medium'
-                        : isDueSoon(task.due_date)
-                          ? 'text-amber-500'
-                          : 'text-navy/40'
-                    }`}
-                  >
-                    {isOverdue(task.due_date) ? '⚠ ' : ''}
-                    {formatDateShort(task.due_date)}
-                  </span>
-                )}
+                <div className="flex items-center gap-2 shrink-0">
+                  {task.due_date && (
+                    <span
+                      className={`text-xs font-body ${
+                        isOverdue(task.due_date)
+                          ? 'text-red-500 font-medium'
+                          : isDueSoon(task.due_date)
+                            ? 'text-amber-500'
+                            : 'text-navy/40'
+                      }`}
+                    >
+                      {isOverdue(task.due_date) ? '⚠ ' : ''}
+                      {formatDateShort(task.due_date)}
+                    </span>
+                  )}
+
+                  {/* Acciones */}
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => setActiveEditModal(task)}
+                      className="p-1.5 text-navy/30 hover:text-brand hover:bg-brand/10 rounded-lg transition-colors"
+                      aria-label="Editar"
+                      title="Editar"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task)}
+                      disabled={deletingId === task.id}
+                      className="p-1.5 text-navy/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                      aria-label="Eliminar"
+                      title="Eliminar"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -236,11 +285,9 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
                     {task.note && (
                       <p className="text-xs text-navy/50 font-body mt-0.5 italic">{task.note}</p>
                     )}
-                    <div className="flex items-center gap-2 mt-1">
-                      {task.objectives && (
-                        <span className="text-xs font-body text-navy/40">{task.objectives.title}</span>
-                      )}
-                    </div>
+                    {task.objectives && (
+                      <p className="text-xs font-body text-navy/40 mt-1">{task.objectives.title}</p>
+                    )}
                   </div>
                   {task.done_at && (
                     <span className="text-xs text-navy/30 font-body shrink-0">
@@ -254,13 +301,21 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
         </div>
       )}
 
-      {/* Modal de completar */}
-      {activeModal && (
+      {/* Modales */}
+      {activeCompleteModal && (
         <TaskModal
-          task={activeModal}
-          open={!!activeModal}
-          onClose={() => setActiveModal(null)}
+          task={activeCompleteModal}
+          open={!!activeCompleteModal}
+          onClose={() => setActiveCompleteModal(null)}
           onCompleted={handleCompleted}
+        />
+      )}
+      {activeEditModal && (
+        <EditTaskModal
+          task={activeEditModal}
+          open={!!activeEditModal}
+          onClose={() => setActiveEditModal(null)}
+          onEdited={handleEdited}
         />
       )}
     </div>
