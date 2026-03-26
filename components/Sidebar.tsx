@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { href: '/objectives?category=salud', label: 'Salud', icon: '♦' },
   { href: '/objectives?category=lifestyle', label: 'Estilo de vida', icon: '◇' },
   { href: '/objectives', label: 'Todos los objetivos', icon: '≡' },
+  { href: '/tasks', label: 'Tareas', icon: '✓' },
   { href: '/reflections', label: 'Diario', icon: '✎' },
 ]
 
@@ -26,6 +27,7 @@ export default function Sidebar() {
     const [base, query] = href.split('?')
     if (base === '/dashboard') return pathname === '/dashboard'
     if (base === '/reflections') return pathname.startsWith('/reflections')
+    if (base === '/tasks') return pathname === '/tasks'
 
     // Para items con query params (ej: category=negocio)
     if (query) {
