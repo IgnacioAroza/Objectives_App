@@ -83,17 +83,17 @@ export default function Sidebar() {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-navy border-t border-white/10 flex z-40">
-        {navItems.slice(0, 5).map((item) => (
+        {[navItems[0], navItems[4], navItems[5], navItems[6]].map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className={`flex-1 flex flex-col items-center gap-1 py-2 text-xs font-body transition-colors ${
+            className={`flex-1 flex flex-col items-center gap-1 py-3 text-xs font-body transition-colors ${
               isActive(item.href) ? 'text-sky' : 'text-white/50'
             }`}
           >
-            <span className="text-base">{item.icon}</span>
+            <span className="text-lg">{item.icon}</span>
             <span className="text-[10px] leading-none truncate px-1">
-              {item.label === 'Todos los objetivos' ? 'Todos' : item.label}
+              {item.label === 'Todos los objetivos' ? 'Objetivos' : item.label}
             </span>
           </Link>
         ))}

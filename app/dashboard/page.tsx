@@ -92,7 +92,7 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div className="space-y-6 pb-20 md:pb-0">
+    <div className="space-y-6">
       <div>
         <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-1">
           {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
@@ -101,39 +101,39 @@ export default async function DashboardPage() {
       </div>
 
       {/* Category cards */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 md:gap-3">
         {categories.map((cat) => (
           <Link
             key={cat.label}
             href={cat.href}
-            className="bg-white border border-navy/10 rounded-2xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+            className="bg-white border border-navy/10 rounded-2xl p-3 md:p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
-            <div className="text-xl mb-2">{cat.icon}</div>
-            <p className="font-display font-bold text-xs text-navy mb-1">{cat.label}</p>
-            <p className="font-display font-bold text-2xl text-navy">
-              {cat.pct}<span className="text-sm font-body font-normal text-navy/40">%</span>
+            <div className="text-lg md:text-xl mb-1.5">{cat.icon}</div>
+            <p className="font-display font-bold text-[10px] md:text-xs text-navy mb-1 leading-tight">{cat.label}</p>
+            <p className="font-display font-bold text-xl md:text-2xl text-navy">
+              {cat.pct}<span className="text-xs md:text-sm font-body font-normal text-navy/40">%</span>
             </p>
-            <ProgressBar value={cat.pct} className="mt-2" />
+            <ProgressBar value={cat.pct} className="mt-1.5 md:mt-2" />
           </Link>
         ))}
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 md:gap-3">
         <StatsCard
-          label="Peso actual"
-          value={`${pesoActual} kg`}
-          sub="Meta: 90 kg"
+          label="Peso"
+          value={`${pesoActual}kg`}
+          sub="Meta: 90"
         />
         <StatsCard
-          label="Días sin fumar"
+          label="Sin fumar"
           value={streakDays !== null ? String(streakDays) : '—'}
-          sub="Racha actual"
+          sub="días"
         />
         <StatsCard
-          label="Rev. acumulada"
+          label="Facturación"
           value={`$${facturacionCurrent}M`}
-          sub="En ARS"
+          sub="ARS"
         />
       </div>
 
