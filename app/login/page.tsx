@@ -1,37 +1,60 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
+  const [code, setCode] = useState('')
+  const [step, setStep] = useState<'email' | 'code'>('email')
   const [loading, setLoading] = useState(false)
-  const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSendCode(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
     const supabase = createClient()
-    const origin = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin
-
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
+      options: { shouldCreateUser: false },
     })
 
     if (authError) {
-      setError(authError.message)
+      console.error('[auth] signInWithOtp:', authError.message)
+      setError('No se pudo enviar el código. Intentá de nuevo.')
       setLoading(false)
       return
     }
 
-    setSent(true)
+    setStep('code')
     setLoading(false)
+  }
+
+  async function handleVerifyCode(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    const supabase = createClient()
+    const { error: verifyError } = await supabase.auth.verifyOtp({
+      email,
+      token: code.trim(),
+      type: 'email',
+    })
+
+    if (verifyError) {
+      console.error('[auth] verifyOtp:', verifyError.message)
+      setError('Código incorrecto o expirado. Revisá el email o pedí uno nuevo.')
+      setLoading(false)
+      return
+    }
+
+    router.push('/dashboard')
+    router.refresh()
   }
 
   return (
@@ -45,35 +68,16 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-navy/10 p-8 shadow-sm">
-          {sent ? (
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-brand text-xl">✉</span>
-              </div>
-              <h2 className="font-display font-semibold text-navy text-lg mb-2">
-                Revisá tu email
-              </h2>
-              <p className="text-navy/60 text-sm font-body">
-                Te enviamos un link mágico a{' '}
-                <span className="font-medium text-navy">{email}</span>.
-                Hacé click en el link para ingresar.
-              </p>
-            </div>
-          ) : (
+          {step === 'email' ? (
             <>
-              <h2 className="font-display font-semibold text-navy text-xl mb-1">
-                Ingresar
-              </h2>
+              <h2 className="font-display font-semibold text-navy text-xl mb-1">Ingresar</h2>
               <p className="text-navy/50 text-sm font-body mb-6">
-                Te enviamos un link mágico por email
+                Te enviamos un código de 6 dígitos por email
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSendCode} className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-navy/70 mb-1.5 font-body"
-                  >
+                  <label htmlFor="email" className="block text-sm font-medium text-navy/70 mb-1.5 font-body">
                     Email
                   </label>
                   <input
@@ -87,16 +91,69 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {error && (
-                  <p className="text-red-600 text-xs font-body">{error}</p>
-                )}
+                {error && <p className="text-red-600 text-xs font-body">{error}</p>}
 
                 <button
                   type="submit"
                   disabled={loading || !email}
                   className="w-full bg-brand text-white py-2.5 rounded-lg text-sm font-medium font-body hover:bg-brand/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? 'Enviando...' : 'Enviar link'}
+                  {loading ? 'Enviando...' : 'Enviar código'}
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center gap-3 mb-5">
+                <button
+                  onClick={() => { setStep('email'); setCode(''); setError(null) }}
+                  className="text-navy/40 hover:text-navy transition-colors"
+                  aria-label="Volver"
+                >
+                  ←
+                </button>
+                <div>
+                  <h2 className="font-display font-semibold text-navy text-xl leading-tight">Ingresá el código</h2>
+                  <p className="text-navy/50 text-xs font-body mt-0.5">Enviado a {email}</p>
+                </div>
+              </div>
+
+              <form onSubmit={handleVerifyCode} className="space-y-4">
+                <div>
+                  <label htmlFor="code" className="block text-sm font-medium text-navy/70 mb-1.5 font-body">
+                    Código de 6 dígitos
+                  </label>
+                  <input
+                    id="code"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    required
+                    autoFocus
+                    value={code}
+                    onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                    placeholder="123456"
+                    className="w-full px-4 py-3 rounded-lg border border-beige bg-cream text-navy placeholder-navy/30 text-xl font-display font-bold tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors"
+                  />
+                </div>
+
+                {error && <p className="text-red-600 text-xs font-body">{error}</p>}
+
+                <button
+                  type="submit"
+                  disabled={loading || code.length < 6}
+                  className="w-full bg-brand text-white py-2.5 rounded-lg text-sm font-medium font-body hover:bg-brand/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Verificando...' : 'Ingresar'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setStep('email'); setCode(''); setError(null) }}
+                  className="w-full text-navy/40 text-xs font-body hover:text-navy transition-colors"
+                >
+                  No recibí el código — volver a intentar
                 </button>
               </form>
             </>
