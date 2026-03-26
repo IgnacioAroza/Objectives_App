@@ -121,19 +121,19 @@ export default function LoginPage() {
               <form onSubmit={handleVerifyCode} className="space-y-4">
                 <div>
                   <label htmlFor="code" className="block text-sm font-medium text-navy/70 mb-1.5 font-body">
-                    Código de 6 dígitos
+                    Código de 8 dígitos
                   </label>
                   <input
                     id="code"
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    maxLength={6}
+                    maxLength={8}
                     required
                     autoFocus
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                    placeholder="123456"
+                    placeholder="12345678"
                     className="w-full px-4 py-3 rounded-lg border border-beige bg-cream text-navy placeholder-navy/30 text-xl font-display font-bold tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors"
                   />
                 </div>
@@ -142,7 +142,7 @@ export default function LoginPage() {
 
                 <button
                   type="submit"
-                  disabled={loading || code.length < 6}
+                  disabled={loading || code.length < 8}
                   className="w-full bg-brand text-white py-2.5 rounded-lg text-sm font-medium font-body hover:bg-brand/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {loading ? 'Verificando...' : 'Ingresar'}
