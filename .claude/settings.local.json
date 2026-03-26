@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@14 objetivos-temp --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(cp -r objetivos-temp/node_modules .)",
+      "Bash(cp objetivos-temp/package.json .)",
+      "Bash(cp objetivos-temp/package-lock.json .)",
+      "Bash(cp objetivos-temp/next-env.d.ts .)",
+      "Bash(cp objetivos-temp/next.config.mjs .)",
+      "Bash(cp \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/objetivos-temp/package.json\" \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/package.json\")",
+      "Bash(cp \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/objetivos-temp/package-lock.json\" \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/package-lock.json\")",
+      "Bash(cp \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/objetivos-temp/next-env.d.ts\" \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/next-env.d.ts\")",
+      "Bash(cp \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/objetivos-temp/next.config.mjs\" \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/next.config.mjs\")",
+      "Bash(cp \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/objetivos-temp/postcss.config.mjs\" \"/c/Users/ignac/Desktop/Proyectos/OBJETIVOS_APP/postcss.config.mjs\")",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
