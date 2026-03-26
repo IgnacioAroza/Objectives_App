@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# archivos de referencia del proyecto (no subir a GitHub)
+spec_objetivos2026.md
+CLAUDE.md
+objetivos_2026.html
+objetivos-temp/
