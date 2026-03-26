@@ -15,7 +15,7 @@ export default function LoginPage() {
     setError(null)
 
     const supabase = createClient()
-    const origin = window.location.origin
+    const origin = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin
 
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,
