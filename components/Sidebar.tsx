@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 type NavItem = {
   href: string
@@ -20,10 +20,25 @@ const navItems: NavItem[] = [
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const isActive = (href: string) => {
-    const base = href.split('?')[0]
+    const [base, query] = href.split('?')
     if (base === '/dashboard') return pathname === '/dashboard'
+    if (base === '/reflections') return pathname.startsWith('/reflections')
+
+    // Para items con query params (ej: category=negocio)
+    if (query) {
+      const itemParams = new URLSearchParams(query)
+      const itemCategory = itemParams.get('category')
+      return pathname === '/objectives' && searchParams.get('category') === itemCategory
+    }
+
+    // "Todos los objetivos": activo solo si no hay category filter y no es detalle
+    if (base === '/objectives') {
+      return pathname === '/objectives' && !searchParams.get('category')
+    }
+
     return pathname.startsWith(base)
   }
 
