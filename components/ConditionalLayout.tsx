@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 
@@ -13,7 +14,9 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Suspense fallback={<div className="hidden md:block w-[220px] bg-navy" />}>
+        <Sidebar />
+      </Suspense>
       <main className="flex-1 md:ml-[220px] p-4 md:p-8 min-h-screen">
         {children}
       </main>
