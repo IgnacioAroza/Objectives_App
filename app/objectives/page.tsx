@@ -1,6 +1,8 @@
+import type React from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { Objective, Config } from '@/lib/types'
 import ObjectiveCard from '@/components/objectives/ObjectiveCard'
+import CategoryIcon from '@/components/ui/CategoryIcon'
 import { calcStreakDays } from '@/lib/utils'
 
 type SearchParams = {
@@ -43,10 +45,10 @@ export default async function ObjectivesPage({
     lifestyle: filtered.filter((o) => o.category === 'lifestyle'),
   }
 
-  const categoryMeta: Record<string, { label: string; icon: string }> = {
-    negocio: { label: 'Negocio', icon: '◈' },
-    salud: { label: 'Salud', icon: '♦' },
-    lifestyle: { label: 'Estilo de vida', icon: '◇' },
+  const categoryMeta: Record<string, { label: string; icon: React.ReactNode }> = {
+    negocio: { label: 'Negocio', icon: <CategoryIcon category="negocio" className="w-5 h-5 text-brand" /> },
+    salud: { label: 'Salud', icon: <CategoryIcon category="salud" className="w-5 h-5 text-sky" /> },
+    lifestyle: { label: 'Estilo de vida', icon: <CategoryIcon category="lifestyle" className="w-5 h-5 text-navy" /> },
   }
 
   const title = categoryFilter
@@ -66,7 +68,7 @@ export default async function ObjectivesPage({
         return (
           <section key={cat}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">{meta.icon}</span>
+              <span className="flex items-center">{meta.icon}</span>
               <h2 className="font-display font-semibold text-navy text-base">{meta.label}</h2>
               <span className="text-xs text-navy/40 font-body">({objs.length})</span>
             </div>

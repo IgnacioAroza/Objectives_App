@@ -6,6 +6,7 @@ import UpcomingTasks from '@/components/dashboard/UpcomingTasks'
 import ProgressBar from '@/components/ui/ProgressBar'
 import Link from 'next/link'
 import { calcQuantitativeProgress, getDaysLeftIn2026, formatDate, getTodayString } from '@/lib/utils'
+import CategoryIcon from '@/components/ui/CategoryIcon'
 
 function calcObjectiveProgress(obj: Objective): number {
   if (obj.type === 'quantitative') {
@@ -86,9 +87,9 @@ export default async function DashboardPage() {
   const today = getTodayString()
 
   const categories = [
-    { label: 'Negocio', icon: '◈', pct: pctNegocio, href: '/objectives?category=negocio', color: 'bg-brand' },
-    { label: 'Salud', icon: '♦', pct: pctSalud, href: '/objectives?category=salud', color: 'bg-sky' },
-    { label: 'Estilo de vida', icon: '◇', pct: pctLifestyle, href: '/objectives?category=lifestyle', color: 'bg-navy' },
+    { label: 'Negocio', icon: <CategoryIcon category="negocio" className="w-6 h-6 text-brand" />, pct: pctNegocio, href: '/objectives?category=negocio', color: 'bg-brand' },
+    { label: 'Salud', icon: <CategoryIcon category="salud" className="w-6 h-6 text-sky" />, pct: pctSalud, href: '/objectives?category=salud', color: 'bg-sky' },
+    { label: 'Estilo de vida', icon: <CategoryIcon category="lifestyle" className="w-6 h-6 text-navy" />, pct: pctLifestyle, href: '/objectives?category=lifestyle', color: 'bg-navy' },
   ]
 
   return (
@@ -108,7 +109,7 @@ export default async function DashboardPage() {
             href={cat.href}
             className="flex items-center gap-4 bg-white border border-navy/10 rounded-2xl p-4 hover:bg-cream/50 transition-colors"
           >
-            <span className="text-2xl w-7 text-center shrink-0">{cat.icon}</span>
+            <span className="w-7 flex-shrink-0 flex items-center justify-center">{cat.icon}</span>
             <div className="flex-1 min-w-0">
               <p className="font-display font-bold text-sm text-navy mb-1.5">{cat.label}</p>
               <ProgressBar value={cat.pct} />

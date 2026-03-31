@@ -83,7 +83,7 @@ export default function QuickAddFAB() {
       {/* Botón FAB */}
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden fixed bottom-[72px] right-4 z-40 w-14 h-14 bg-brand text-white rounded-full shadow-lg shadow-brand/40 flex items-center justify-center active:scale-95 transition-transform"
+        className="md:hidden fixed bottom-[88px] right-4 z-40 w-14 h-14 bg-brand text-white rounded-full shadow-lg shadow-brand/40 flex items-center justify-center active:scale-95 transition-transform"
         aria-label="Agregar tarea rápida"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
