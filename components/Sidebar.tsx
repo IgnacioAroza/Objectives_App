@@ -87,11 +87,11 @@ export default function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex-1 flex flex-col items-center gap-1 py-3 text-xs font-body transition-colors ${
+            className={`flex-1 flex flex-col items-center gap-1 py-4 text-xs font-body transition-colors ${
               isActive(item.href) ? 'text-sky' : 'text-white/50'
             }`}
           >
-            <span className="text-lg">{item.icon}</span>
+            <span className="text-xl">{item.icon}</span>
             <span className="text-[10px] leading-none truncate px-1">
               {item.label === 'Todos los objetivos' ? 'Objetivos' : item.label}
             </span>

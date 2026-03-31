@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
+import QuickAddFAB from '@/components/dashboard/QuickAddFAB'
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -20,6 +21,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
       <main className="flex-1 md:ml-[220px] p-4 md:p-8 pb-24 md:pb-8 min-h-screen max-w-2xl mx-auto md:max-w-none md:mx-0">
         {children}
       </main>
+      <QuickAddFAB />
     </div>
   )
 }
