@@ -5,6 +5,7 @@ import QuantitativeProgress from '@/components/objectives/QuantitativeProgress'
 import QualitativeSlider from '@/components/objectives/QualitativeSlider'
 import StreakWidget from '@/components/objectives/StreakWidget'
 import TaskListClient from '@/components/objectives/TaskListClient'
+import ObjectiveActions from '@/components/objectives/ObjectiveActions'
 import Link from 'next/link'
 import { getCategoryLabel } from '@/lib/utils'
 
@@ -66,10 +67,15 @@ export default async function ObjectiveDetailPage({
         >
           ← {getCategoryLabel(obj.category)}
         </Link>
-        <h1 className="font-display font-bold text-xl text-navy">{obj.title}</h1>
-        {obj.unit && (
-          <p className="text-sm text-navy/50 font-body mt-1">Unidad: {obj.unit}</p>
-        )}
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="font-display font-bold text-xl text-navy">{obj.title}</h1>
+            {obj.unit && (
+              <p className="text-sm text-navy/50 font-body mt-1">Unidad: {obj.unit}</p>
+            )}
+          </div>
+          <ObjectiveActions objective={obj} />
+        </div>
       </div>
 
       {/* Progress widget */}

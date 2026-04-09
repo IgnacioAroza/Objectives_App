@@ -12,7 +12,8 @@ export function calcStreakDays(quitDate: string): number {
 }
 
 export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString('es-AR', {
+  const [year, month, day] = date.split('-').map(Number)
+  return new Date(year, month - 1, day).toLocaleDateString('es-AR', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -20,7 +21,8 @@ export function formatDate(date: string): string {
 }
 
 export function formatDateShort(date: string): string {
-  return new Date(date).toLocaleDateString('es-AR', {
+  const [year, month, day] = date.split('-').map(Number)
+  return new Date(year, month - 1, day).toLocaleDateString('es-AR', {
     day: 'numeric',
     month: 'short',
   })

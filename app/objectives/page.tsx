@@ -4,6 +4,7 @@ import type { Objective, Config } from '@/lib/types'
 import ObjectiveCard from '@/components/objectives/ObjectiveCard'
 import CategoryIcon from '@/components/ui/CategoryIcon'
 import { calcStreakDays } from '@/lib/utils'
+import CreateObjectiveButton from '@/components/objectives/CreateObjectiveButton'
 
 type SearchParams = {
   category?: string
@@ -57,9 +58,12 @@ export default async function ObjectivesPage({
 
   return (
     <div className="space-y-8 pb-20 md:pb-0">
-      <div>
-        <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-1">2026</p>
-        <h1 className="font-display font-bold text-2xl text-navy">{title}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-1">2026</p>
+          <h1 className="font-display font-bold text-2xl text-navy">{title}</h1>
+        </div>
+        <CreateObjectiveButton />
       </div>
 
       {Object.entries(grouped).map(([cat, objs]) => {
