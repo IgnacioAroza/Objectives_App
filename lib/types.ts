@@ -71,3 +71,17 @@ export type Config = {
   key: string
   value: string
 }
+
+export type CoachMessage = {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
+
+export type SuggestedTask = {
+  title: string
+  objective_id: string
+  priority: 1 | 2 | 3
+  due_date: string | null
+}

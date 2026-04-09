@@ -29,6 +29,12 @@ type NavItem = {
   icon: React.ReactNode
 }
 
+const IconSparkles = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+  </svg>
+)
+
 const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: <IconHome /> },
   { href: '/objectives?category=negocio', label: 'Negocio', icon: <CategoryIcon category="negocio" className="w-4 h-4" /> },
@@ -37,6 +43,7 @@ const navItems: NavItem[] = [
   { href: '/objectives', label: 'Todos los objetivos', icon: <IconFlag /> },
   { href: '/tasks', label: 'Tareas', icon: <IconClipboard /> },
   { href: '/reflections', label: 'Diario', icon: '✎' },
+  { href: '/coach', label: 'Coach', icon: <IconSparkles /> },
 ]
 
 export default function Sidebar() {
@@ -48,6 +55,7 @@ export default function Sidebar() {
     if (base === '/dashboard') return pathname === '/dashboard'
     if (base === '/reflections') return pathname.startsWith('/reflections')
     if (base === '/tasks') return pathname === '/tasks'
+    if (base === '/coach') return pathname === '/coach'
 
     // Para items con query params (ej: category=negocio)
     if (query) {
@@ -103,7 +111,7 @@ export default function Sidebar() {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-navy border-t border-white/10 flex z-40" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        {[navItems[0], navItems[4], navItems[5], navItems[6]].map((item) => (
+        {[navItems[0], navItems[4], navItems[5], navItems[6], navItems[7]].map((item) => (
           <Link
             key={item.href}
             href={item.href}
