@@ -34,7 +34,10 @@ export function getDaysLeftIn2026(): number {
 }
 
 export function getTodayString(): string {
-  return new Date().toISOString().split('T')[0]
+  // Usamos en-CA porque devuelve formato YYYY-MM-DD nativo
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+  }).format(new Date())
 }
 
 export function getPriorityLabel(priority: 1 | 2 | 3): string {
