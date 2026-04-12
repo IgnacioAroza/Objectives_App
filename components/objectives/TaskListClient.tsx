@@ -77,7 +77,7 @@ export default function TaskListClient({
   return (
     <div className="space-y-4">
       {/* Pending tasks */}
-      <div className="bg-white border border-navy/10 rounded-2xl p-5">
+      <div className="bg-surface border border-navy/10 rounded-2xl p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-display font-semibold text-navy text-sm">
             Tareas pendientes ({pendingTasks.length})
@@ -98,19 +98,19 @@ export default function TaskListClient({
               onChange={(e) => setNewTitle(e.target.value)}
               required
               placeholder="Descripción de la tarea"
-              className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+              className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
             />
             <div className="flex gap-2">
               <input
                 type="date"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="flex-1 px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                className="flex-1 px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
               />
               <select
                 value={newPriority}
                 onChange={(e) => setNewPriority(parseInt(e.target.value) as 1 | 2 | 3)}
-                className="px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                className="px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
               >
                 <option value={1}>Alta</option>
                 <option value={2}>Media</option>
@@ -141,7 +141,7 @@ export default function TaskListClient({
 
       {/* Done tasks */}
       {doneTasks.length > 0 && (
-        <div className="bg-white border border-navy/10 rounded-2xl p-5">
+        <div className="bg-surface border border-navy/10 rounded-2xl p-5">
           <button
             onClick={() => setShowDone(!showDone)}
             className="flex items-center gap-2 w-full text-left"

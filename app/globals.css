@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Formato: R G B sin rgb() para soportar <alpha-value> de Tailwind */
+    --color-bg:            250 247 242;   /* #FAF7F2 — cream */
+    --color-surface:       255 255 255;   /* #FFFFFF — surface */
+    --color-surface-muted: 232 224 213;   /* #E8E0D5 — beige */
+    --color-fg:             20  27  99;   /* #141B63 — navy */
+    --color-sidebar:        20  27  99;   /* #141B63 */
+    --color-sidebar-fg:    255 255 255;
+
+    color-scheme: light;
+  }
+
+  .dark {
+    --color-bg:              14  19  51;  /* #0E1333 */
+    --color-surface:         26  32  80;  /* #1A2050 */
+    --color-surface-muted:   36  48 102;  /* #243066 */
+    --color-fg:             245 243 238;  /* #F5F3EE */
+    --color-sidebar:         10  15  64;  /* #0A0F40 */
+    --color-sidebar-fg:     245 243 238;
+
+    color-scheme: dark;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

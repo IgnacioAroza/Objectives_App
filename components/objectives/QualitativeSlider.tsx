@@ -43,7 +43,7 @@ export default function QualitativeSlider({ objective }: QualitativeSliderProps)
   }
 
   return (
-    <div className="bg-white border border-navy/10 rounded-2xl p-5">
+    <div className="bg-surface border border-navy/10 rounded-2xl p-5">
       <h3 className="font-display font-semibold text-navy text-sm mb-4">Progreso</h3>
 
       <div className="flex items-center gap-4 mb-2">

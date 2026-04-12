@@ -75,7 +75,7 @@ export default function QuantitativeProgress({ objective, valueLogs }: Quantitat
 
   return (
     <div className="space-y-6">
-      <div className="bg-white border border-navy/10 rounded-[14px] p-5">
+      <div className="bg-surface border border-navy/10 rounded-[14px] p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-xs text-navy/40 font-body mb-0.5">Progreso actual</p>
@@ -102,7 +102,7 @@ export default function QuantitativeProgress({ objective, valueLogs }: Quantitat
         </div>
       </div>
 
-      <div className="bg-white border border-navy/10 rounded-[14px] p-5">
+      <div className="bg-surface border border-navy/10 rounded-[14px] p-5">
         <h3 className="font-display font-semibold text-navy text-sm mb-4">
           Registrar nuevo valor
         </h3>
@@ -134,7 +134,7 @@ export default function QuantitativeProgress({ objective, valueLogs }: Quantitat
       </div>
 
       {valueLogs.length > 0 && (
-        <div className="bg-white border border-navy/10 rounded-[14px] p-5">
+        <div className="bg-surface border border-navy/10 rounded-[14px] p-5">
           <h3 className="font-display font-semibold text-navy text-sm mb-4">
             Historial de valores
           </h3>

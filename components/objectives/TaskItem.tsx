@@ -54,7 +54,7 @@ export default function TaskItem({ task, onCompleted, onEdited, onDeleted }: Tas
         className={`group flex items-start gap-3 p-3 rounded-xl border transition-colors ${
           task.done
             ? 'bg-beige/30 border-beige opacity-60'
-            : 'bg-white border-navy/10 hover:border-navy/20'
+            : 'bg-surface border-navy/10 hover:border-navy/20'
         }`}
       >
         <button

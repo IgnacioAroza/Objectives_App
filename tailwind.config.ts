@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,11 +10,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy:  '#141B63',
+        // Neutrales tematizados via CSS vars (cambian con .dark)
+        navy:    'rgb(var(--color-fg) / <alpha-value>)',
+        cream:   'rgb(var(--color-bg) / <alpha-value>)',
+        beige:   'rgb(var(--color-surface-muted) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        // Tokens del sidebar (siempre oscuro en ambos modos)
+        sidebar:      'rgb(var(--color-sidebar) / <alpha-value>)',
+        'sidebar-fg': 'rgb(var(--color-sidebar-fg) / <alpha-value>)',
+        // Acentos fijos (funcionan en ambos modos)
         brand: '#1E4FD8',
         sky:   '#4DA3FF',
-        cream: '#FAF7F2',
-        beige: '#E8E0D5',
       },
       fontFamily: {
         display: ['var(--font-montserrat)', 'sans-serif'],

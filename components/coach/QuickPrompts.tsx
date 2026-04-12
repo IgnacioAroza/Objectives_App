@@ -21,7 +21,7 @@ export default function QuickPrompts({ onSelect, disabled }: Props) {
           key={p.label}
           onClick={() => onSelect(p.text)}
           disabled={disabled}
-          className="shrink-0 px-3 py-1.5 rounded-full border border-beige bg-white text-xs font-body text-navy hover:bg-brand hover:text-white hover:border-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="shrink-0 px-3 py-1.5 rounded-full border border-beige bg-surface text-xs font-body text-navy hover:bg-brand hover:text-white hover:border-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {p.label}
         </button>

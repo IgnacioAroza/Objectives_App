@@ -137,7 +137,7 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
             onChange={(e) => setter(e.target.value)}
             placeholder={placeholder}
             rows={4}
-            className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand resize-none leading-relaxed"
+            className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand resize-none leading-relaxed"
           />
         </div>
       ))}
@@ -149,11 +149,11 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
           onChange={(e) => setFreeNotes(e.target.value)}
           placeholder="Lo que quieras escribir sin estructura..."
           rows={3}
-          className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand resize-none leading-relaxed"
+          className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand resize-none leading-relaxed"
         />
       </div>
 
-      <div className="bg-white border border-navy/10 rounded-2xl p-5">
+      <div className="bg-surface border border-navy/10 rounded-2xl p-5">
         <label className="block text-sm font-medium text-navy font-body mb-3">
           ¿Sobre qué objetivos trabajaste hoy?
         </label>

@@ -107,7 +107,7 @@ export default async function DashboardPage() {
           <Link
             key={cat.label}
             href={cat.href}
-            className="flex items-center gap-4 bg-white border border-navy/10 rounded-2xl p-4 hover:bg-cream/50 transition-colors"
+            className="flex items-center gap-4 bg-surface border border-navy/10 rounded-2xl p-4 hover:bg-cream/50 transition-colors"
           >
             <span className="w-7 flex-shrink-0 flex items-center justify-center">{cat.icon}</span>
             <div className="flex-1 min-w-0">
@@ -127,7 +127,7 @@ export default async function DashboardPage() {
           <Link
             key={cat.label}
             href={cat.href}
-            className="bg-white border border-navy/10 rounded-2xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+            className="bg-surface border border-navy/10 rounded-2xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
             <div className="text-xl mb-2">{cat.icon}</div>
             <p className="font-display font-bold text-xs text-navy mb-1">{cat.label}</p>
@@ -182,7 +182,7 @@ export default async function DashboardPage() {
 
       {/* Recent reflections */}
       {reflections && reflections.length > 0 && (
-        <div className="bg-white border border-navy/10 rounded-2xl p-5">
+        <div className="bg-surface border border-navy/10 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs font-medium text-navy/50 uppercase tracking-wider font-body">
               Últimas reflexiones

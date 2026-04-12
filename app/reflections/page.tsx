@@ -72,7 +72,7 @@ export default async function ReflectionsPage({
             className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
               !searchParams.objective
                 ? 'bg-brand text-white border-brand'
-                : 'bg-white text-navy/70 border-navy/20 hover:border-brand'
+                : 'bg-surface text-navy/70 border-navy/20 hover:border-brand'
             }`}
           >
             Todos
@@ -84,7 +84,7 @@ export default async function ReflectionsPage({
               className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
                 searchParams.objective === obj.id
                   ? 'bg-brand text-white border-brand'
-                  : 'bg-white text-navy/70 border-navy/20 hover:border-brand'
+                  : 'bg-surface text-navy/70 border-navy/20 hover:border-brand'
               }`}
             >
               {obj.title}

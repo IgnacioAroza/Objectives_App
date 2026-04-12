@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Montserrat, Inter } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
+import ThemeScript from '@/components/ThemeScript'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -26,7 +27,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`${montserrat.variable} ${inter.variable}`}>
+    <html lang="es" className={`${montserrat.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="font-body bg-cream min-h-screen">
         <ConditionalLayout>
           {children}

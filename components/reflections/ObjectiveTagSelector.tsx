@@ -47,7 +47,7 @@ export default function ObjectiveTagSelector({ objectives, selected, onChange }:
                   className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
                     isSelected
                       ? 'bg-brand text-white border-brand'
-                      : 'bg-white text-navy/70 border-navy/20 hover:border-brand hover:text-brand'
+                      : 'bg-surface text-navy/70 border-navy/20 hover:border-brand hover:text-brand'
                   }`}
                 >
                   {obj.title}

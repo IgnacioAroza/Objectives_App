@@ -65,7 +65,7 @@ export default function StreakWidget({ quitDate: initialQuitDate }: StreakWidget
   }
 
   return (
-    <div className="bg-white border border-navy/10 rounded-2xl p-5">
+    <div className="bg-surface border border-navy/10 rounded-2xl p-5">
       <h3 className="font-display font-semibold text-navy text-sm mb-4">Racha sin fumar</h3>
 
       {quitDate && days !== null ? (
@@ -119,7 +119,7 @@ export default function StreakWidget({ quitDate: initialQuitDate }: StreakWidget
               value={dateInput}
               onChange={(e) => setDateInput(e.target.value)}
               required
-              className="flex-1 px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+              className="flex-1 px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
             />
             <button
               type="submit"

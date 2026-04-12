@@ -38,7 +38,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose()
       }}
-      className="rounded-2xl shadow-xl border border-navy/10 p-0 backdrop:bg-navy/40 backdrop:backdrop-blur-sm w-full max-w-md"
+      className="rounded-2xl shadow-xl border border-navy/10 p-0 backdrop:bg-black/50 backdrop:backdrop-blur-sm w-full max-w-md bg-surface"
     >
       <div className="p-6">
         {title && (

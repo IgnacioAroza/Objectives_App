@@ -67,7 +67,7 @@ export default function LoginPage() {
           <p className="text-navy/50 text-sm mt-1 font-body">Objetivos 2026</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-navy/10 p-8 shadow-sm">
+        <div className="bg-surface rounded-2xl border border-navy/10 p-8 shadow-sm">
           {step === 'email' ? (
             <>
               <h2 className="font-display font-semibold text-navy text-xl mb-1">Ingresar</h2>

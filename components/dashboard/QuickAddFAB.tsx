@@ -101,7 +101,7 @@ export default function QuickAddFAB() {
 
       {/* Bottom sheet */}
       <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out ${
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out ${
           open ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
@@ -136,7 +136,7 @@ export default function QuickAddFAB() {
                   placeholder="Ej: Llamar al proveedor de China"
                   required
                   autoFocus
-                  className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                  className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -149,7 +149,7 @@ export default function QuickAddFAB() {
                   value={objectiveId}
                   onChange={(e) => setObjectiveId(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                  className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
                 >
                   <option value="">Seleccioná un objetivo</option>
                   {(['negocio', 'salud', 'lifestyle'] as const).map((cat) => {
@@ -175,7 +175,7 @@ export default function QuickAddFAB() {
                   <select
                     value={priority}
                     onChange={(e) => setPriority(parseInt(e.target.value) as 1 | 2 | 3)}
-                    className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                    className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
                   >
                     <option value={1}>Alta</option>
                     <option value={2}>Media</option>
@@ -190,7 +190,7 @@ export default function QuickAddFAB() {
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+                    className="w-full px-4 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
                   />
                 </div>
               </div>

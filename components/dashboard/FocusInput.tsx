@@ -66,7 +66,7 @@ export default function FocusInput({ initialFocus, today }: FocusInputProps) {
   ]
 
   return (
-    <div className="bg-white border border-navy/10 rounded-2xl p-5">
+    <div className="bg-surface border border-navy/10 rounded-2xl p-5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-xs font-medium text-navy/50 uppercase tracking-wider font-body">
           Foco de hoy — top 3

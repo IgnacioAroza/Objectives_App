@@ -10,7 +10,7 @@ type UpcomingTasksProps = {
 export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
   if (tasks.length === 0) {
     return (
-      <div className="bg-white border border-navy/10 rounded-2xl p-5">
+      <div className="bg-surface border border-navy/10 rounded-2xl p-5">
         <h3 className="text-xs font-medium text-navy/50 uppercase tracking-wider font-body mb-3">
           Tareas próximas (7 días)
         </h3>
@@ -20,7 +20,7 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
   }
 
   return (
-    <div className="bg-white border border-navy/10 rounded-2xl p-5">
+    <div className="bg-surface border border-navy/10 rounded-2xl p-5">
       <h3 className="text-xs font-medium text-navy/50 uppercase tracking-wider font-body mb-3">
         Tareas próximas (7 días)
       </h3>

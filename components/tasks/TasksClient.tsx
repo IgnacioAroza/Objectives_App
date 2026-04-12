@@ -104,7 +104,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
   return (
     <div className="space-y-5">
       {/* Filtros */}
-      <div className="bg-white border border-navy/10 rounded-2xl p-4 space-y-3">
+      <div className="bg-surface border border-navy/10 rounded-2xl p-4 space-y-3">
         <div>
           <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-2">Categoría</p>
           <div className="flex flex-wrap gap-2">
@@ -115,7 +115,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
                 className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
                   categoryFilter === value
                     ? 'bg-brand text-white border-brand'
-                    : 'bg-white text-navy/70 border-navy/20 hover:border-brand hover:text-brand'
+                    : 'bg-surface text-navy/70 border-navy/20 hover:border-brand hover:text-brand'
                 }`}
               >
                 {label}
@@ -133,7 +133,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
                 className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
                   priorityFilter === value
                     ? 'bg-navy text-white border-navy'
-                    : 'bg-white text-navy/70 border-navy/20 hover:border-navy hover:text-navy'
+                    : 'bg-surface text-navy/70 border-navy/20 hover:border-navy hover:text-navy'
                 }`}
               >
                 {label}
@@ -145,17 +145,17 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
 
       {/* Stats rápidas */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white border border-navy/10 rounded-xl p-3 text-center">
+        <div className="bg-surface border border-navy/10 rounded-xl p-3 text-center">
           <p className="font-display font-bold text-2xl text-navy">{filteredPending.length}</p>
           <p className="text-xs text-navy/40 font-body mt-0.5">Pendientes</p>
         </div>
-        <div className="bg-white border border-red-100 rounded-xl p-3 text-center">
+        <div className="bg-surface border border-red-100 rounded-xl p-3 text-center">
           <p className="font-display font-bold text-2xl text-red-500">
             {filteredPending.filter((t) => isOverdue(t.due_date)).length}
           </p>
           <p className="text-xs text-navy/40 font-body mt-0.5">Vencidas</p>
         </div>
-        <div className="bg-white border border-navy/10 rounded-xl p-3 text-center">
+        <div className="bg-surface border border-navy/10 rounded-xl p-3 text-center">
           <p className="font-display font-bold text-2xl text-sky">
             {filteredPending.filter((t) => isDueSoon(t.due_date)).length}
           </p>
@@ -170,7 +170,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
         </h2>
 
         {filteredPending.length === 0 ? (
-          <div className="bg-white border border-navy/10 rounded-2xl px-5 py-10 text-center">
+          <div className="bg-surface border border-navy/10 rounded-2xl px-5 py-10 text-center">
             <p className="text-sm text-navy/40 font-body">
               {pendingTasks.length === 0 ? 'No hay tareas pendientes.' : 'No hay tareas con ese filtro.'}
             </p>
@@ -188,7 +188,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
               return (
                 <div
                   key={task.id}
-                  className={`bg-white border border-navy/10 border-l-4 ${priorityColor} rounded-2xl px-4 py-4 flex items-start gap-4`}
+                  className={`bg-surface border border-navy/10 border-l-4 ${priorityColor} rounded-2xl px-4 py-4 flex items-start gap-4`}
                 >
                   {/* Botón check grande */}
                   <button
@@ -275,7 +275,7 @@ export default function TasksClient({ initialPendingTasks, initialDoneTasks }: T
 
       {/* Historial de completadas */}
       {filteredDone.length > 0 && (
-        <div className="bg-white border border-navy/10 rounded-2xl overflow-hidden">
+        <div className="bg-surface border border-navy/10 rounded-2xl overflow-hidden">
           <button
             onClick={() => setShowDone(!showDone)}
             className="w-full flex items-center justify-between px-5 py-4 hover:bg-cream/50 transition-colors"

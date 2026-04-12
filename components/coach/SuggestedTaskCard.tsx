@@ -46,7 +46,7 @@ export default function SuggestedTaskCard({ task, objectiveName, onAdded }: Prop
   }
 
   return (
-    <div className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${added ? 'bg-green-50 border-green-200' : 'bg-white border-beige'}`}>
+    <div className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${added ? 'bg-green-50 border-green-200' : 'bg-surface border-beige'}`}>
       <div className="flex-1 min-w-0">
         <p className={`text-sm font-body font-medium leading-snug ${added ? 'text-green-700 line-through' : 'text-navy'}`}>
           {task.title}

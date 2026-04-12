@@ -63,7 +63,7 @@ function MessageBubble({
           className={`px-4 py-3 rounded-2xl text-sm font-body leading-relaxed whitespace-pre-wrap ${
             isUser
               ? 'bg-brand text-white rounded-tr-sm'
-              : 'bg-white border border-beige text-navy rounded-tl-sm'
+              : 'bg-surface border border-beige text-navy rounded-tl-sm'
           }`}
         >
           {text}
@@ -186,7 +186,7 @@ export default function ChatInterface({ initialHistory, objectives }: Props) {
 
         {streaming && messages[messages.length - 1]?.content === '' && (
           <div className="flex justify-start">
-            <div className="bg-white border border-beige rounded-2xl rounded-tl-sm px-4 py-3">
+            <div className="bg-surface border border-beige rounded-2xl rounded-tl-sm px-4 py-3">
               <div className="flex gap-1">
                 <span className="w-2 h-2 rounded-full bg-navy/30 animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-2 h-2 rounded-full bg-navy/30 animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -218,7 +218,7 @@ export default function ChatInterface({ initialHistory, objectives }: Props) {
             disabled={streaming}
             rows={1}
             placeholder="Escribí tu pregunta... (Enter para enviar)"
-            className="flex-1 resize-none rounded-xl border border-beige bg-white px-4 py-3 text-sm font-body text-navy placeholder:text-navy/30 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors disabled:opacity-50 max-h-32"
+            className="flex-1 resize-none rounded-xl border border-beige bg-surface px-4 py-3 text-sm font-body text-navy placeholder:text-navy/30 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors disabled:opacity-50 max-h-32"
             style={{ lineHeight: '1.5' }}
             onInput={e => {
               const el = e.currentTarget

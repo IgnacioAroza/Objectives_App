@@ -96,7 +96,7 @@ export default function ObjectiveFormModal({ open, onClose, objective }: Props) 
     setLoading(false)
   }
 
-  const inputClass = 'w-full rounded-xl border border-beige bg-white px-3 py-2.5 text-sm font-body text-navy placeholder:text-navy/30 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors'
+  const inputClass = 'w-full rounded-xl border border-beige bg-surface px-3 py-2.5 text-sm font-body text-navy placeholder:text-navy/30 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors'
   const labelClass = 'block text-xs font-body text-navy/60 mb-1'
 
   return (

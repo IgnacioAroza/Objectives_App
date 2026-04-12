@@ -65,7 +65,7 @@ export default function TaskModal({ task, open, onClose, onCompleted }: TaskModa
           onChange={(e) => setNote(e.target.value)}
           placeholder="Ej: Lo terminé antes de lo esperado, aprendí que..."
           rows={3}
-          className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand resize-none"
+          className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand resize-none"
         />
       </div>
 

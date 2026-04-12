@@ -17,7 +17,7 @@ export default function ReflectionCard({ reflection }: ReflectionCardProps) {
     .filter(Boolean)
 
   return (
-    <div className="bg-white border border-navy/10 rounded-2xl overflow-hidden">
+    <div className="bg-surface border border-navy/10 rounded-2xl overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full text-left p-5 hover:bg-cream/50 transition-colors"

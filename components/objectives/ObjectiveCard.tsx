@@ -54,7 +54,7 @@ const CIRCUMFERENCE = 100
 function ProgressRing({ value }: { value: number }) {
   const filled = Math.min(100, Math.max(0, value))
   const empty = CIRCUMFERENCE - filled
-  const ringColor = filled >= 75 ? '#1E4FD8' : filled >= 30 ? '#4DA3FF' : '#CBD5E1'
+  const ringColor = filled >= 75 ? '#1E4FD8' : filled >= 30 ? '#4DA3FF' : 'rgb(var(--color-surface-muted))'
 
   return (
     <svg width="48" height="48" viewBox="0 0 36 36" className="-rotate-90">
@@ -62,7 +62,7 @@ function ProgressRing({ value }: { value: number }) {
       <circle
         cx="18" cy="18" r={RADIUS}
         fill="none"
-        stroke="#E8E0D5"
+        stroke="rgb(var(--color-surface-muted))"
         strokeWidth="3"
       />
       {/* Progress */}
@@ -85,7 +85,7 @@ export default function ObjectiveCard({ objective, streakDays }: ObjectiveCardPr
 
   return (
     <Link href={`/objectives/${objective.id}`}>
-      <div className="bg-white border border-navy/10 rounded-[14px] p-5 hover:shadow-md hover:border-navy/20 transition-all cursor-pointer group">
+      <div className="bg-surface border border-navy/10 rounded-[14px] p-5 hover:shadow-md hover:border-navy/20 transition-all cursor-pointer group">
         <div className="flex items-start justify-between mb-3">
           <Badge variant={objective.category}>
             {getCategoryLabel(objective.category)}

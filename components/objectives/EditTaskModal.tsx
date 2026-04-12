@@ -59,7 +59,7 @@ export default function EditTaskModal({ task, open, onClose, onEdited }: EditTas
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+            className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
           />
         </div>
 
@@ -70,7 +70,7 @@ export default function EditTaskModal({ task, open, onClose, onEdited }: EditTas
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+              className="w-full px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
             />
           </div>
           <div>
@@ -78,7 +78,7 @@ export default function EditTaskModal({ task, open, onClose, onEdited }: EditTas
             <select
               value={priority}
               onChange={(e) => setPriority(parseInt(e.target.value) as 1 | 2 | 3)}
-              className="px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-white focus:outline-none focus:border-brand"
+              className="px-3 py-2 border border-navy/20 rounded-lg text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand"
             >
               <option value={1}>Alta</option>
               <option value={2}>Media</option>
