@@ -36,7 +36,7 @@ export default async function NewReflectionPage() {
           {todayReflection ? 'Editar reflexión de hoy' : 'Reflexión de hoy'}
         </h1>
         <p className="text-sm text-navy/50 font-body mt-1">
-          {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+          {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Argentina/Buenos_Aires' })}
         </p>
       </div>
 
