@@ -38,6 +38,9 @@ next-env.d.ts
 
 # archivos de referencia del proyecto (no subir a GitHub)
 spec_objetivos2026.md
+OBJETIVOS_APP_ROADMAP.md
 CLAUDE.md
 objetivos_2026.html
 objetivos-temp/
+.claude
+.playwright-mcp
