@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest } from 'next/server'
+import { getTodayString } from '@/lib/utils'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
 
   const lightQuery = isLightQuery(message)
   const today = new Date()
-  const todayStr = today.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  const todayStr = today.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Argentina/Buenos_Aires' })
 
   // % del año transcurrido y días restantes
   const startOfYear = new Date(today.getFullYear(), 0, 1)
@@ -89,7 +90,7 @@ export async function POST(req: NextRequest) {
   ])
 
   // ── Contexto de objetivos (con semáforo on-track) ───────────────────────────
-  const todayDateStr = today.toISOString().split('T')[0]
+  const todayDateStr = getTodayString()
   const objectivesContext = (objectives ?? []).map(obj => {
     let progressStr = ''
     if (obj.type === 'quantitative') {
@@ -135,9 +136,13 @@ export async function POST(req: NextRequest) {
 
   // ── Reflexiones ──────────────────────────────────────────────────────────────
   const reflectionsContext = (recentReflections ?? []).map(r => {
-    if (r.content) return `[${r.date}] ${r.content.slice(0, 200)}`
-    return `[${r.date}] ${r.what_i_did?.slice(0, 120) ?? '-'}`
-  }).join('\n')
+    const lines = [`📅 ${r.date}${r.date === todayDateStr ? ' (hoy)' : ''}`]
+    if (r.what_i_did) lines.push(`  Hice: ${r.what_i_did.slice(0, 300)}`)
+    if (r.how_i_felt) lines.push(`  Sentí: ${r.how_i_felt.slice(0, 200)}`)
+    if (r.what_i_learned) lines.push(`  Aprendí: ${r.what_i_learned.slice(0, 200)}`)
+    if (r.free_notes) lines.push(`  Notas: ${r.free_notes.slice(0, 150)}`)
+    return lines.join('\n')
+  }).join('\n\n')
 
   // ── Value logs ───────────────────────────────────────────────────────────────
   const valueLogsContext = (valueLogs ?? []).map(v => {
