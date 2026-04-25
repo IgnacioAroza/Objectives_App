@@ -28,15 +28,37 @@ export default async function TasksPage() {
     throw new Error(`No se pudieron cargar el historial: ${doneError.message}`)
   }
 
+  const pending = (pendingTasks ?? []) as TaskWithObjective[]
+  const today = new Date(new Date().toDateString())
+  const overdueCount = pending.filter(
+    (t) => t.due_date && new Date(t.due_date) < today
+  ).length
+
   return (
-    <div className="space-y-6 pb-20 md:pb-0">
-      <div>
-        <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-1">Global</p>
-        <h1 className="font-display font-bold text-2xl text-navy">Todas las tareas</h1>
+    <div className="space-y-5 pb-20 md:pb-0">
+
+      {/* Header */}
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <p className="text-[11px] text-navy/40 font-body uppercase tracking-widest mb-1">
+            Action items
+          </p>
+          <h1 className="font-display font-bold text-[26px] leading-none text-navy">Tareas</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          {overdueCount > 0 && (
+            <span className="bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">
+              {overdueCount} vencida{overdueCount !== 1 ? 's' : ''}
+            </span>
+          )}
+          <span className="bg-surface border border-navy/10 text-navy/50 text-xs font-semibold px-2.5 py-1 rounded-lg font-body">
+            {pending.length - overdueCount} próximas
+          </span>
+        </div>
       </div>
 
       <TasksClient
-        initialPendingTasks={(pendingTasks ?? []) as TaskWithObjective[]}
+        initialPendingTasks={pending}
         initialDoneTasks={(doneTasks ?? []) as TaskWithObjective[]}
       />
     </div>

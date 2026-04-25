@@ -21,15 +21,52 @@ type ReflectionFormProps = {
   initialData: InitialData | null
 }
 
+const FIELDS = [
+  {
+    key: 'what_i_did' as const,
+    label: '¿Qué hice hoy?',
+    placeholder: 'Describí las acciones que tomaste hoy...',
+    rows: 4,
+  },
+  {
+    key: 'how_i_felt' as const,
+    label: '¿Cómo me sentí?',
+    placeholder: 'Tu estado emocional, energía, motivación...',
+    rows: 4,
+  },
+  {
+    key: 'what_i_learned' as const,
+    label: '¿Qué aprendí o me llevé de hoy?',
+    placeholder: 'Un insight, una lección, algo que vas a recordar...',
+    rows: 4,
+  },
+  {
+    key: 'free_notes' as const,
+    label: 'Espacio libre (opcional)',
+    placeholder: 'Lo que quieras escribir sin estructura...',
+    rows: 3,
+  },
+]
+
+type FieldKey = 'what_i_did' | 'how_i_felt' | 'what_i_learned' | 'free_notes'
+
 export default function ReflectionForm({ objectives, today, initialData }: ReflectionFormProps) {
   const router = useRouter()
-  const [whatIDid, setWhatIDid] = useState(initialData?.what_i_did ?? '')
-  const [howIFelt, setHowIFelt] = useState(initialData?.how_i_felt ?? '')
-  const [whatILearned, setWhatILearned] = useState(initialData?.what_i_learned ?? '')
-  const [freeNotes, setFreeNotes] = useState(initialData?.free_notes ?? '')
+  const [values, setValues] = useState<Record<FieldKey, string>>({
+    what_i_did:     initialData?.what_i_did     ?? '',
+    how_i_felt:     initialData?.how_i_felt     ?? '',
+    what_i_learned: initialData?.what_i_learned ?? '',
+    free_notes:     initialData?.free_notes     ?? '',
+  })
   const [selectedIds, setSelectedIds] = useState<string[]>(initialData?.selectedObjectiveIds ?? [])
   const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  function handleChange(key: FieldKey, val: string) {
+    setValues((prev) => ({ ...prev, [key]: val }))
+    setSaved(false)
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,17 +74,16 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
     setError(null)
 
     const supabase = createClient()
-
     let reflectionId = initialData?.id
 
     if (reflectionId) {
       const { error: updateError } = await supabase
         .from('reflections')
         .update({
-          what_i_did: whatIDid || null,
-          how_i_felt: howIFelt || null,
-          what_i_learned: whatILearned || null,
-          free_notes: freeNotes || null,
+          what_i_did:     values.what_i_did     || null,
+          how_i_felt:     values.how_i_felt     || null,
+          what_i_learned: values.what_i_learned || null,
+          free_notes:     values.free_notes     || null,
           updated_at: new Date().toISOString(),
         })
         .eq('id', reflectionId)
@@ -62,11 +98,11 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
       const { data: newReflection, error: insertError } = await supabase
         .from('reflections')
         .insert({
-          date: today,
-          what_i_did: whatIDid || null,
-          how_i_felt: howIFelt || null,
-          what_i_learned: whatILearned || null,
-          free_notes: freeNotes || null,
+          date:           today,
+          what_i_did:     values.what_i_did     || null,
+          how_i_felt:     values.how_i_felt     || null,
+          what_i_learned: values.what_i_learned || null,
+          free_notes:     values.free_notes     || null,
         })
         .select()
         .single()
@@ -77,11 +113,9 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
         setSaving(false)
         return
       }
-
       reflectionId = newReflection.id
     }
 
-    // Sync objective tags
     const { error: deleteError } = await supabase
       .from('reflection_objectives')
       .delete()
@@ -102,84 +136,65 @@ export default function ReflectionForm({ objectives, today, initialData }: Refle
     }
 
     setSaving(false)
+    setSaved(true)
     router.push('/reflections')
     router.refresh()
   }
 
-  const fields = [
-    {
-      label: '¿Qué hice hoy?',
-      value: whatIDid,
-      setter: setWhatIDid,
-      placeholder: 'Describí las acciones que tomaste hoy...',
-    },
-    {
-      label: '¿Cómo me sentí?',
-      value: howIFelt,
-      setter: setHowIFelt,
-      placeholder: 'Tu estado emocional, energía, motivación...',
-    },
-    {
-      label: '¿Qué aprendí o me llevé de hoy?',
-      value: whatILearned,
-      setter: setWhatILearned,
-      placeholder: 'Un insight, una lección, algo que vas a recordar...',
-    },
-  ]
+  const canSave = values.what_i_did.trim().length > 0
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {fields.map(({ label, value, setter, placeholder }) => (
-        <div key={label}>
-          <label className="block text-sm font-medium text-navy font-body mb-2">{label}</label>
-          <textarea
-            value={value}
-            onChange={(e) => setter(e.target.value)}
-            placeholder={placeholder}
-            rows={4}
-            className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand resize-none leading-relaxed"
+    <form onSubmit={handleSubmit}>
+
+      {/* Single card with stacked fields */}
+      <div className="bg-surface border border-navy/10 rounded-2xl overflow-hidden mb-5">
+        {FIELDS.map((field) => (
+          <div key={field.key} className="border-b border-navy/5 last:border-0">
+            <div className="px-5 pt-4 pb-1">
+              <label className="text-xs font-bold text-brand tracking-[0.04em]">
+                {field.label}
+              </label>
+            </div>
+            <textarea
+              value={values[field.key]}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+              placeholder={field.placeholder}
+              rows={field.rows}
+              className="w-full px-5 pb-4 pt-1 border-none outline-none bg-transparent text-sm font-body text-navy placeholder:text-navy/30 resize-none leading-relaxed block"
+            />
+          </div>
+        ))}
+
+        {/* Objective chips */}
+        <div className="px-5 py-4 border-t border-navy/5">
+          <p className="text-xs font-bold text-navy font-body mb-3">
+            ¿Sobre qué objetivos trabajaste hoy?
+          </p>
+          <ObjectiveTagSelector
+            objectives={objectives}
+            selected={selectedIds}
+            onChange={setSelectedIds}
           />
         </div>
-      ))}
-
-      <div>
-        <label className="block text-sm font-medium text-navy font-body mb-2">Espacio libre (opcional)</label>
-        <textarea
-          value={freeNotes}
-          onChange={(e) => setFreeNotes(e.target.value)}
-          placeholder="Lo que quieras escribir sin estructura..."
-          rows={3}
-          className="w-full px-3 py-2.5 border border-navy/20 rounded-xl text-sm font-body text-navy bg-surface focus:outline-none focus:border-brand resize-none leading-relaxed"
-        />
       </div>
 
-      <div className="bg-surface border border-navy/10 rounded-2xl p-5">
-        <label className="block text-sm font-medium text-navy font-body mb-3">
-          ¿Sobre qué objetivos trabajaste hoy?
-        </label>
-        <ObjectiveTagSelector
-          objectives={objectives}
-          selected={selectedIds}
-          onChange={setSelectedIds}
-        />
-      </div>
+      {error && <p className="text-sm text-red-600 font-body mb-4">{error}</p>}
 
-      {error && <p className="text-sm text-red-600 font-body">{error}</p>}
-
+      {/* Action buttons */}
       <div className="flex gap-3">
         <button
           type="button"
           onClick={() => router.back()}
-          className="flex-1 py-3 border border-navy/20 rounded-xl text-sm font-body text-navy/70 hover:bg-beige transition-colors"
+          className="flex-1 py-3 border border-navy/15 rounded-xl text-sm font-body text-navy/60 hover:bg-beige transition-colors"
         >
           Cancelar
         </button>
         <button
           type="submit"
-          disabled={saving}
-          className="flex-1 py-3 bg-brand text-white rounded-xl text-sm font-body font-medium hover:bg-brand/90 disabled:opacity-50 transition-colors"
+          disabled={saving || !canSave}
+          className="flex-[2] py-3 bg-brand text-white rounded-xl text-sm font-display font-bold hover:bg-brand/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
         >
-          {saving ? 'Guardando...' : 'Guardar reflexión'}
+          {saving ? 'Guardando...' : saved ? '✓ Guardado' : 'Guardar reflexión'}
         </button>
       </div>
     </form>

@@ -34,18 +34,20 @@ export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
     applyTheme(next)
   }
 
-  // Evitar mismatch de hidratación mostrando un placeholder hasta montar
   if (!mounted) {
-    return <div className={`w-9 h-9 ${className}`} />
+    return <div className={`h-9 ${className}`} />
   }
 
   return (
     <button
       onClick={toggle}
-      aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-      className={`flex items-center justify-center w-9 h-9 rounded-lg text-sidebar-fg/60 hover:text-sidebar-fg hover:bg-sidebar-fg/10 transition-colors ${className}`}
+      aria-label={theme === 'dark' ? 'Change to light mode' : 'Change to dark mode'}
+      className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sidebar-fg/60 hover:text-sidebar-fg hover:bg-sidebar-fg/10 transition-colors ${className}`}
     >
       {theme === 'dark' ? <IconSun /> : <IconMoon />}
+      <span className="text-[12px] font-body font-medium leading-none">
+        {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+      </span>
     </button>
   )
 }

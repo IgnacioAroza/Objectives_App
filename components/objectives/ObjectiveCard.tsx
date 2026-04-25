@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import type { Objective } from '@/lib/types'
-import Badge from '@/components/ui/Badge'
 import { calcQuantitativeProgress, getCategoryLabel } from '@/lib/utils'
 
 type ObjectiveCardProps = {
@@ -41,36 +40,26 @@ function getProgressLabel(objective: Objective, streakDays?: number): string {
   return `${objective.progress_manual}%`
 }
 
-const typeLabel: Record<string, string> = {
-  quantitative: 'Cuantitativo',
-  qualitative: 'Cualitativo',
-  streak: 'Racha',
+const CAT_COLORS: Record<string, { ring: string; badge: string; badgeBg: string }> = {
+  negocio:   { ring: '#1E4FD8', badge: '#1E4FD8', badgeBg: '#EEF2FF' },
+  salud:     { ring: '#4DA3FF', badge: '#4DA3FF', badgeBg: '#EBF5FF' },
+  lifestyle: { ring: '#141B63', badge: '#141B63', badgeBg: '#EEEFFE' },
 }
 
-// Radio 15.9155 → circunferencia = 2πr ≈ 100 → dasharray usa % directamente
 const RADIUS = 15.9155
 const CIRCUMFERENCE = 100
 
-function ProgressRing({ value }: { value: number }) {
+function ProgressRing({ value, color }: { value: number; color: string }) {
   const filled = Math.min(100, Math.max(0, value))
   const empty = CIRCUMFERENCE - filled
-  const ringColor = filled >= 75 ? '#1E4FD8' : filled >= 30 ? '#4DA3FF' : 'rgb(var(--color-surface-muted))'
-
   return (
-    <svg width="48" height="48" viewBox="0 0 36 36" className="-rotate-90">
-      {/* Track */}
+    <svg width="72" height="72" viewBox="0 0 36 36" className="-rotate-90">
+      <circle cx="18" cy="18" r={RADIUS} fill="none" stroke="rgb(var(--color-surface-muted))" strokeWidth="2.8" />
       <circle
         cx="18" cy="18" r={RADIUS}
         fill="none"
-        stroke="rgb(var(--color-surface-muted))"
-        strokeWidth="3"
-      />
-      {/* Progress */}
-      <circle
-        cx="18" cy="18" r={RADIUS}
-        fill="none"
-        stroke={ringColor}
-        strokeWidth="3"
+        stroke={color}
+        strokeWidth="2.8"
         strokeLinecap="round"
         strokeDasharray={`${filled} ${empty}`}
         style={{ transition: 'stroke-dasharray 0.5s ease' }}
@@ -82,31 +71,45 @@ function ProgressRing({ value }: { value: number }) {
 export default function ObjectiveCard({ objective, streakDays }: ObjectiveCardProps) {
   const progress = getProgressValue(objective, streakDays)
   const label = getProgressLabel(objective, streakDays)
+  const cat = CAT_COLORS[objective.category] ?? CAT_COLORS.negocio
 
   return (
     <Link href={`/objectives/${objective.id}`}>
-      <div className="bg-surface border border-navy/10 rounded-[14px] p-5 hover:shadow-md hover:border-navy/20 transition-all cursor-pointer group">
-        <div className="flex items-start justify-between mb-3">
-          <Badge variant={objective.category}>
+      <div className="bg-surface border border-navy/10 rounded-[14px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group">
+        {/* Top: category badge */}
+        <div className="flex items-center justify-between mb-4">
+          <span
+            className="text-[10px] font-bold uppercase tracking-[0.08em] px-2 py-0.5 rounded"
+            style={{ color: cat.badge, background: cat.badgeBg }}
+          >
             {getCategoryLabel(objective.category)}
-          </Badge>
+          </span>
+          <span className="text-[11px] font-semibold" style={{ color: cat.ring }}>
+            {progress}%
+          </span>
+        </div>
 
-          {/* Ring con % en el centro */}
-          <div className="relative flex-shrink-0 w-12 h-12 flex items-center justify-center">
-            <ProgressRing value={progress} />
-            <span className="absolute font-display font-bold text-[11px] text-navy leading-none">
+        {/* Progress ring centered */}
+        <div className="flex justify-center mb-3">
+          <div className="relative w-[72px] h-[72px] flex items-center justify-center">
+            <ProgressRing value={progress} color={cat.ring} />
+            <span
+              className="absolute font-display font-bold text-[13px] leading-none"
+              style={{ color: cat.ring }}
+            >
               {progress}%
             </span>
           </div>
         </div>
 
-        <h3 className="font-display font-semibold text-navy text-sm mb-3 group-hover:text-brand transition-colors leading-snug">
+        {/* Title centered */}
+        <h3 className="font-display font-bold text-sm text-navy text-center mb-2 leading-snug group-hover:text-brand transition-colors">
           {objective.title}
         </h3>
 
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-navy/40 font-body">{typeLabel[objective.type] ?? objective.type}</span>
-          <span className="text-xs font-medium text-navy/60 font-body">{label}</span>
+        {/* Value below */}
+        <div className="bg-cream rounded-lg px-3 py-2 text-center">
+          <p className="text-xs text-navy/50 font-body">{label}</p>
         </div>
       </div>
     </Link>

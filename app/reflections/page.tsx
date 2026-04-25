@@ -1,18 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import type { ReflectionWithObjectives, Objective } from '@/lib/types'
-import ReflectionCard from '@/components/reflections/ReflectionCard'
+import ReflectionsList from '@/components/reflections/ReflectionsList'
 import Link from 'next/link'
+import { getTodayString } from '@/lib/utils'
 
-type SearchParams = {
-  objective?: string
-}
-
-export default async function ReflectionsPage({
-  searchParams,
-}: {
-  searchParams: SearchParams
-}) {
+export default async function ReflectionsPage() {
   const supabase = createClient()
+  const today = getTodayString()
 
   const [
     { data: reflections, error },
@@ -22,7 +16,10 @@ export default async function ReflectionsPage({
       .from('reflections')
       .select('*, reflection_objectives(objective_id, objectives(title, category))')
       .order('date', { ascending: false }),
-    supabase.from('objectives').select('id, title, category').order('sort_order'),
+    supabase
+      .from('objectives')
+      .select('id, title, category')
+      .order('sort_order'),
   ])
 
   if (error) {
@@ -32,85 +29,36 @@ export default async function ReflectionsPage({
   const allReflections = (reflections ?? []) as ReflectionWithObjectives[]
   const allObjectives = (objectives ?? []) as Pick<Objective, 'id' | 'title' | 'category'>[]
 
-  const filtered = searchParams.objective
-    ? allReflections.filter((r) =>
-        r.reflection_objectives.some((ro) => ro.objective_id === searchParams.objective)
-      )
-    : allReflections
-
-  const selectedObj = searchParams.objective
-    ? allObjectives.find((o) => o.id === searchParams.objective)
-    : null
-
   return (
     <div className="space-y-6 pb-20 md:pb-0">
-      <div className="flex items-start justify-between">
+
+      {/* Header */}
+      <div className="flex items-end justify-between gap-3 flex-wrap">
         <div>
-          <p className="text-xs text-navy/40 font-body uppercase tracking-wider mb-1">Tu diario</p>
-          <h1 className="font-display font-bold text-2xl text-navy">Reflexiones</h1>
-          {selectedObj && (
-            <p className="text-sm text-navy/60 font-body mt-1">
-              Filtrando por: <span className="font-medium">{selectedObj.title}</span>
-              <Link href="/reflections" className="ml-2 text-brand hover:underline">× Limpiar</Link>
-            </p>
-          )}
+          <p className="text-[11px] text-navy/40 font-body uppercase tracking-widest mb-1">
+            Práctica diaria
+          </p>
+          <h1 className="font-display font-bold text-[26px] leading-none text-navy">
+            Reflexiones
+          </h1>
         </div>
         <Link
           href="/reflections/new"
-          className="bg-brand text-white px-4 py-2 rounded-xl text-sm font-body font-medium hover:bg-brand/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand text-white text-sm font-display font-bold hover:bg-brand/90 transition-all hover:-translate-y-px shadow-sm hover:shadow-md flex-shrink-0"
+          style={{ boxShadow: '0 4px 14px rgba(30,79,216,0.3)' }}
         >
-          + Nueva
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" strokeWidth="2.2">
+            <path d="M6 1v10M1 6h10" />
+          </svg>
+          Nueva reflexión
         </Link>
       </div>
 
-      {/* Filter by objective */}
-      <div>
-        <p className="text-xs text-navy/50 font-body mb-2">Filtrar por objetivo</p>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/reflections"
-            className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
-              !searchParams.objective
-                ? 'bg-brand text-white border-brand'
-                : 'bg-surface text-navy/70 border-navy/20 hover:border-brand'
-            }`}
-          >
-            Todos
-          </Link>
-          {allObjectives.map((obj) => (
-            <Link
-              key={obj.id}
-              href={`/reflections?objective=${obj.id}`}
-              className={`px-3 py-1.5 rounded-full text-xs font-body border transition-colors ${
-                searchParams.objective === obj.id
-                  ? 'bg-brand text-white border-brand'
-                  : 'bg-surface text-navy/70 border-navy/20 hover:border-brand'
-              }`}
-            >
-              {obj.title}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Reflections list */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-navy/40 font-body mb-3">Todavía no hay reflexiones.</p>
-          <Link
-            href="/reflections/new"
-            className="inline-block bg-brand text-white px-4 py-2 rounded-xl text-sm font-body font-medium hover:bg-brand/90"
-          >
-            Escribir la primera
-          </Link>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((reflection) => (
-            <ReflectionCard key={reflection.id} reflection={reflection} />
-          ))}
-        </div>
-      )}
+      <ReflectionsList
+        reflections={allReflections}
+        objectives={allObjectives}
+        today={today}
+      />
     </div>
   )
 }
